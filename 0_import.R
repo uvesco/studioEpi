@@ -31,7 +31,7 @@ campiScMult <- which(campi$numsemicolon > 0) #sono i campi in cui c'è un punto 
 #ma possono mancare campi in sezioni non attivate, campi in cui è stata sempre solo scelta una opzione, rientrare campi in cui è stato usato il
 #punto e virgola per altre ragioni
 #2do: sarebbe utile inserire un record funzionale che sia completo, che non usi mai il nei campi di testo e che in ogni scelta multipla utilizzi due opzioni
-#i campi "altro" finiscono comunque in colonne a parte (potrebbero essere riconosciuti dal fatto che c'i sono c'è solo 1 record con la scelta)
+#i campi "altro" finiscono comunque in colonne a parte (potrebbero essere riconosciuti dal fatto che c'è solo 1 record con la scelta, ma potrebbe essere stata selezionata più volte)
 #dal record funzionale si estrarrebbero facilmente tutti i numero di campo che devono essere trattati come scelta multipla
 
 #campi[campi$numsemicolon > 0, 2] <- make.names(paste(campi$prog[campi$numsemicolon > 0], abbreviate(campi[campi$numsemicolon > 0, 1]), ssep = "."))
@@ -62,6 +62,6 @@ rm(list = c("campi", "colnamesNewData", "campiScMult")) # eliminazione di oggett
 data$`0005_Cera-` <- data$`0005_Cera-` | data$`0005_cera-` | data$`0005_propoli, cera-`
 data$`0005_Propoli-` <- data$`0005_Propoli-` | data$`0005_Proponi essiccata-` | data$`0005_propoli-` | data$`0005_propoli, cera-`
 #colonne da cancellare
-col2del <- which(colnames(data) %in% c("0005_cera-", "0005_propoli, cera-", "0005_Proponi essiccata-", "0005_propoli-"))
-data <- data[, - col2del]
-
+col2del <- which(colnames(data) %in% c("0005_cera-", "0005_propoli, cera-", "0005_Proponi essiccata-", "0005_propoli-")) #posizioni delle colonne da cancellare
+data <- data[, - col2del] #eliminate le colonne in posizione col2del
+rm(col2del) #eliminato l'oggetto col2del
