@@ -1,0 +1,21 @@
+analisi con chunks
+open data x analisi risultati
+rendere le colonne compatibili con digitazione diretta senza virgolette (es. senza spazi)
+
+domanda 0005: inserire linee per omogeneizzare le risposte (cera, propoli), anche in base alle nuove opzioni di risposta possibile (la stessa di slide 13)
+
+slides presentazione CRT 2019:
+	-carta delle risposte
+	-13: predisporre grafici su R	
+	-14: separare grafico in 2 linee : attenzione alle vendite da non considerare come mortalità
+	
+
+prima linea: 0007-4.	Numero di colonie vive al 1 aprile 2018	
+
+
+fare slides interattive tipo https://research.beeinformed.org/survey/
+
+deadline 23 gennaio per fare app interattive con shiny: presentare i temi che riteniamo interessanti e in seconda parte correlare con la mortalità (come in sito BIP, in realtà il sito BIP )
+mortalità invernale, mortalità totale
+
+
