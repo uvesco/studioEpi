@@ -1,3 +1,5 @@
+### script per l'importazione dei dati dal file csv esportato da google form ###
+
 #2do: cambiare tipo di campo a campi particolari 
 
 ### pacchetti necessari
@@ -9,7 +11,8 @@ library(splitstackshape)
 
 # importazione dati
 
-data <- read_csv("/mnt/dati/umberto/Documenti/importanza_1_sync/unaapi/questionario_BIP_UNAAPI/2019-11-23_Studio epidemiologico dell’impatto delle pratiche apistiche e dell’alimentazione artificiale sulla fitness delle colonie.csv")
+# data <- read_csv("/mnt/dati/umberto/Documenti/importanza_1_sync/unaapi/questionario_BIP_UNAAPI/2019-11-23_Studio epidemiologico dell’impatto delle pratiche apistiche e dell’alimentazione artificiale sulla fitness delle colonie.csv")
+data <- read_csv("../dati/2020-01-09_dati.csv")
 
 data <- as.data.frame(data)
 
@@ -49,26 +52,12 @@ colnamesNewData$newcolnames <- paste0(colnamesNewData$`colnames(data)`, "-", col
 #sum(colnames(data)!= colnamesNewData$`colnames(data)`)#check
 #head(colnamesNewData$newcolnames)
 colnames(data) <- colnamesNewData$newcolnames
-head(colnames(data))
+#head(colnames(data))
 
-write.xlsx(data, "2019-11-26_dati_espansi.xlsx")
+#write.xlsx(data, "2019-11-26_dati_espansi.xlsx")
+rm(list = c("campi", "colnamesNewData", "campiScMult")) # eliminazione di oggetti provvisori utilizzati per la lavorazione
 
-
-# mappa sedi aziendali ----------------
-require(rgdal)
-library(RColorBrewer)
-tabella <- table(data[4])
-province <- substr(names(tabella), 1,3)
-province <- data.frame(COD_PRO = as.integer(province), num = as.vector(tabella))
-prov2008<-readOGR("./geodata/amministrativi_ita/prov2008_s.shp")
-EPSG <- make_EPSG()
-llCRS<-CRS(EPSG[grep("32632", EPSG$code), 3])
-rm(EPSG)
-colori<-colorRamp(c("yellow", "red")) ## (x) , x in [0,1]
-
-cols <- brewer.pal(3, "YlOrRd")
-pal <- colorRampPalette(c("yellow", "red"))(10)
-prov2008$cols[!is.na(prov2008$num)] <- rgb(colorRamp(pal)(prov2008$num[!is.na(prov2008$num)]/10), max=255)
-
-plot(prov2008, col=prov2008$cols)
+# domanda 0005: eliminazione di doppioni da campo "altro"
+sum(data$`0005_cera-`)
+sum(data$`0005_Cera-`)
 
