@@ -58,6 +58,10 @@ colnames(data) <- colnamesNewData$newcolnames
 rm(list = c("campi", "colnamesNewData", "campiScMult")) # eliminazione di oggetti provvisori utilizzati per la lavorazione
 
 # domanda 0005: eliminazione di doppioni da campo "altro"
-sum(data$`0005_cera-`)
-sum(data$`0005_Cera-`)
+#colnames(data)[grepl("^0005", colnames(data))]
+data$`0005_Cera-` <- data$`0005_Cera-` | data$`0005_cera-` | data$`0005_propoli, cera-`
+data$`0005_Propoli-` <- data$`0005_Propoli-` | data$`0005_Proponi essiccata-` | data$`0005_propoli-` | data$`0005_propoli, cera-`
+#colonne da cancellare
+col2del <- which(colnames(data) %in% c("0005_cera-", "0005_propoli, cera-", "0005_Proponi essiccata-", "0005_propoli-"))
+data <- data[, - col2del]
 
