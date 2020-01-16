@@ -54,7 +54,6 @@ colnamesNewData$newcolnames <- paste0(colnamesNewData$`colnames(data)`, "-", col
 colnames(data) <- colnamesNewData$newcolnames
 #head(colnames(data))
 
-#write.xlsx(data, "2019-11-26_dati_espansi.xlsx")
 rm(list = c("campi", "colnamesNewData", "campiScMult")) # eliminazione di oggetti provvisori utilizzati per la lavorazione
 
 # domanda 0005: eliminazione di doppioni da campo "altro"
@@ -65,3 +64,5 @@ data$`0005_Propoli-` <- data$`0005_Propoli-` | data$`0005_Proponi essiccata-` | 
 col2del <- which(colnames(data) %in% c("0005_cera-", "0005_propoli, cera-", "0005_Proponi essiccata-", "0005_propoli-")) #posizioni delle colonne da cancellare
 data <- data[, - col2del] #eliminate le colonne in posizione col2del
 rm(col2del) #eliminato l'oggetto col2del
+
+xlsx::write.xlsx(data, paste0(Sys.Date(), "_dati_espansi.xlsx"))

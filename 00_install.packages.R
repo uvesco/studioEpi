@@ -1,0 +1,1 @@
+install.packages(c("xlsx", "readr", "splitstackshape", "ggplot2", "ggplotgui", "esquisse"), dep = T)
