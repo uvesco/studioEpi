@@ -2,17 +2,14 @@
 
 #2do: cambiare tipo di campo a campi particolari 
 
-### pacchetti necessari
-library(readr)
-#library(dplyr)
-#library(tidyr)
-#require(googleformr)
-library(splitstackshape)
+### pacchetti necessari non li carico ma lo richiamo nel codice
+# library(readr)
+# library(splitstackshape)
 
 # importazione dati
 
 # data <- read_csv("/mnt/dati/umberto/Documenti/importanza_1_sync/unaapi/questionario_BIP_UNAAPI/2019-11-23_Studio epidemiologico dell’impatto delle pratiche apistiche e dell’alimentazione artificiale sulla fitness delle colonie.csv")
-data <- read_csv("../dati/2020-01-09_dati.csv")
+data <- readr::read_csv("../dati/2020-01-09_dati.csv")
 
 data <- as.data.frame(data)
 
@@ -39,7 +36,7 @@ campiScMult <- which(campi$numsemicolon > 0) #sono i campi in cui c'è un punto 
 colnames(data) <- campi$prog #cambio temporaneo dei nomi di campo con progressivi per poter riordinare nomi e non averli troppo lunghi 
 
 for(i in campiScMult){
-	data <- cSplit_e(data, i, ";", type="character", fill=0) #divido i campi a scelta multipla in campi sì/no
+	data <- splitstackshape::cSplit_e(data, i, ";", type="character", fill=0) #divido i campi a scelta multipla in campi sì/no
 }; rm(i)
 
 data <- data[, sort(colnames(data))] #dato che i campi sì/no sono al fondo (per funzione cSplit_e), li rimetto a posto
@@ -60,9 +57,13 @@ rm(list = c("campi", "colnamesNewData", "campiScMult")) # eliminazione di oggett
 #colnames(data)[grepl("^0005", colnames(data))]
 data$`0005_Cera-` <- data$`0005_Cera-` | data$`0005_cera-` | data$`0005_propoli, cera-`
 data$`0005_Propoli-` <- data$`0005_Propoli-` | data$`0005_Proponi essiccata-` | data$`0005_propoli-` | data$`0005_propoli, cera-`
+#2do aggiungere l'opzione in google form "servizi didattici" e correggere il record "servizi di didattici", soluzione provvisoria:
+colnames(data)[which(colnames(data) == "0005_Servizi di didattici-")] <- "0005_Servizi didattici-"
 #colonne da cancellare
 col2del <- which(colnames(data) %in% c("0005_cera-", "0005_propoli, cera-", "0005_Proponi essiccata-", "0005_propoli-")) #posizioni delle colonne da cancellare
 data <- data[, - col2del] #eliminate le colonne in posizione col2del
 rm(col2del) #eliminato l'oggetto col2del
 
 xlsx::write.xlsx(data, paste0(Sys.Date(), "_dati_espansi.xlsx"))
+
+#2do: aggiungere nord, centro e sud sulla base della classificazione della sede aziendale

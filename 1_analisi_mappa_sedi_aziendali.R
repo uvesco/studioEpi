@@ -1,7 +1,5 @@
-
-
 # mappa sedi aziendali ----------------
-require(rgdal)
+library(rgdal)
 library(RColorBrewer)
 tabella <- table(data[4])
 province <- substr(names(tabella), 1,3)
