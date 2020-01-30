@@ -9,6 +9,7 @@ EPSG <- make_EPSG()
 llCRS<-CRS(EPSG[grep("32632", EPSG$code), 3])
 rm(EPSG)
 colori<-colorRamp(c("yellow", "red")) ## (x) , x in [0,1]
+prov2008 <- merge(prov2008, province)
 
 cols <- brewer.pal(3, "YlOrRd")
 pal <- colorRampPalette(c("yellow", "red"))(10)

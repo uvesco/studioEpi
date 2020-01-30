@@ -65,5 +65,6 @@ data <- data[, - col2del] #eliminate le colonne in posizione col2del
 rm(col2del) #eliminato l'oggetto col2del
 
 xlsx::write.xlsx(data, paste0(Sys.Date(), "_dati_espansi.xlsx"))
+saveRDS(data, "./shiny/data.RDS")
 
 #2do: aggiungere nord, centro e sud sulla base della classificazione della sede aziendale
