@@ -66,54 +66,28 @@ ui <- navbarPage(title = "Questionario Unaapi",
 			# Show a plot of the generated distribution
 			mainPanel(plotOutput("distplot"))
 		)
-	)#,
-	# tabPanel(
-	# 	"Mortalità",
-	# 	# Application title
-	# 	titlePanel("Questionario Unaapi"),
-	# 	
-	# 	
-	# 	sidebarLayout(
-	# 		sidebarPanel(
-	# 			#helpText("Crea grafici interattivi"),
-	# 			
-	# 			radioButtons(
-	# 				"vtar",
-	# 				label = "Selezione aziende",
-	# 				choices = c(
-	# 					"Tutte le aziende",
-	# 					"Az. < 100 alveari",
-	# 					"Az. 100-300 alveari",
-	# 					"As. > 300 alveari"
-	# 				),
-	# 				selected = "Tutte le aziende"
-	# 			),
-	# 			
-	# 			radioButtons(
-	# 				"vmor",
-	# 				label = "Mortalità",
-	# 				choices = c("Mortalità in stagione attiva",
-	# 										"Mortalità invernale"),
-	# 				selected = "Mortalità invernale"
-	# 			)#,
-	# 			
-	# 			#
-	# 			# sliderInput("range",
-	# 			# 						label = "Range of interest:",
-	# 			# 						min = 0, max = 100, value = c(0, 100))
-	# 		),
-	# 		
-	# 		# Show a plot of the generated distribution
-	# 		mainPanel(plotOutput("distplot"))
-	# 	)
-	# )
-	
+	),
+	tabPanel(
+		"Confronti",
+		sidebarLayout(
+			sidebarPanel(
+				radioButtons(
+					"vmor",
+					label = "Mortalità",
+					choices = c("Mortalità in stagione attiva",
+											"Mortalità invernale"),
+					selected = "Mortalità invernale"
+				)#,
+			),
+			mainPanel()
+		)
+		)
 	
 		
 	)
 
 
-# Define server logic required to draw a histogram
+# server --------
 server <- function(input, output) {
 	a100 <-
 		which(data$`0007-4.	Numero di colonie vive al 1 aprile 2018` < 100)
@@ -198,22 +172,26 @@ server <- function(input, output) {
 		}else{
 			hist(dato[rselect], ylab = "Frequenza", xlab = "", main = "", col = rcoloreda)
 		}
+		
 
-		
-		
-		#cambiare la domanda e cambiare i colori a seconda di chi risponde
-		
-	})
+	})		
 	
-	# output$distPlot <- renderPlot({
-	# 	# generate bins based on input$bins from ui.R
-	# 	x    <- faithful[, 2]
-	# 	bins <- seq(min(x), max(x), length.out = input$bins + 1)
-	#
-	# 	# draw the histogram with the specified number of bins
-	# 	hist(x, breaks = bins, col = 'darkgray', border = 'white')
-	# })
+	# boxplot ----
+	output$bbplot <- renderPlot({
+			mortal <- switch(
+				input$vmor,
+				"Mortalità in stagione attiva" = data$cMest,
+				"Mortalità invernale" = data$cMinv
+			)
+			datoh <- switch(
+				input$vquest,
+				
+			)
+
+
+})
+
 }
 
-# Run the application
+# Run the application ----
 shinyApp(ui = ui, server = server)
