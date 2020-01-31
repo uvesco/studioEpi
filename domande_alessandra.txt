@@ -1,0 +1,21 @@
+[21:46, 30/1/2020] Alessandra Giacomelli: (Ogni grafico lo intendo graficato in 4 modi:
+																					 	-Tutti gli apicoltori intervistati;
+																					 - Apicoltori hobbisti (fino a 49 alveari?)
+																					 - Apicoltori semiprofessionisti ( da 50 a 299 alveari???)
+																					 - Apicoltori professionisti ( oltre 300 alveari???)), ogni grafico correlato sia alla mortalità estiva sia alla mortalità invernale (si può fare?) per
+le seguenti risposte:
+1. Impiego di acido ossalico gocciolato
+2. Impiego di acido ossalico sublimato
+3. Impiego di acido ossalico abbinato ad altri trattamenti 
+4. Impiego di acido ossalico in assenza di covata
+5. Impiego di acido ossalico in presenza di covata
+6. Impiego di acido formico in gel
+7. Impiego di acido formico liquido
+8. Ipm: asportazione di covata da fuco
+9. Ipm: Asportazione totale di covata 
+10. Ipm: asportazione parziale della covata per la creazione di nuclei 
+11. Insabbiamento estivo della ape regina
+12. Insabbiamento invernale della ape regina 
+13. Nutrizione: Candito zucchetino
+14. Nutrizione: sciroppo zuccherino
+15. Nutrizione: pre/probiotici
