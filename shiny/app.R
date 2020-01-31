@@ -104,7 +104,9 @@ ui <- navbarPage(title = "Questionario Unaapi",
 					selected = "Tutte le aziende"
 				)
 			),
-			mainPanel(plotOutput("bbplot"))
+			mainPanel(plotOutput("bbplot"),
+								verbatimTextOutput("nptesto")
+								)
 		)
 		)
 	
@@ -200,65 +202,131 @@ server <- function(input, output) {
 		
 
 	})		
+
+	
 	
 	# boxplot ----
 	output$bbplot <- renderPlot({
-			mortal <- switch(
-				input$vmor,
-				"Mortalità in stagione attiva" = data$cMest,
-				"Mortalità invernale" = data$cMinv
-			)
-			datoh <- switch(
-				input$vdomsp,
-				"Impiego di acido ossalico gocciolato" = 
-					data[ , which(grepl("^....-60.1 Ha utilizzato prodotti a base di Acido Ossalico - gocciolati" , 
-																																				names(data)))[1]] == "Sì",
-				"Impiego di acido ossalico sublimato" =
-					data[ , which(grepl("^....-60.1 Ha utilizzato prodotti a base di Acido Ossalico - sublimato", 
-				names(data)))[1]] == "Sì",
-				"Impiego di acido formico" = 					data[ , which(grepl("^....-60.1 Ha utilizzato prodotti a base di Acido Formico", 
+		mortal <- switch(
+			input$vmor,
+			"Mortalità in stagione attiva" = data$cMest,
+			"Mortalità invernale" = data$cMinv
+		)
+		datoh <- switch(
+			input$vdomsp,
+			"Impiego di acido ossalico gocciolato" = 
+				data[ , which(grepl("^....-60.1 Ha utilizzato prodotti a base di Acido Ossalico - gocciolati" , 
+														names(data)))[1]] == "Sì",
+			"Impiego di acido ossalico sublimato" =
+				data[ , which(grepl("^....-60.1 Ha utilizzato prodotti a base di Acido Ossalico - sublimato", 
+														names(data)))[1]] == "Sì",
+			"Impiego di acido formico" = 					data[ , which(grepl("^....-60.1 Ha utilizzato prodotti a base di Acido Formico", 
+																														names(data)))[1]] == "Sì",
+			"Ipm: asportazione di covata da fuco" = data[ , which(grepl("^....-63.1 TRA", 
+																																	names(data)))[1]] == "Sì",
+			"Ipm: Asportazione totale di covata" = data[ , which(grepl("^....-63.3", 
 																																 names(data)))[1]] == "Sì",
-				"Ipm: asportazione di covata da fuco" = data[ , which(grepl("^....-63.1 TRA", 
-																																					names(data)))[1]] == "Sì",
-				"Ipm: Asportazione totale di covata" = data[ , which(grepl("^....-63.3", 
-																																			names(data)))[1]] == "Sì",
-				"Ipm: asportazione parziale della covata per la creazione di nuclei" = data[ , which(grepl("^....-63.4", 
-																																																			 names(data)))[1]] == "Sì", 
-				"Ingabbiamento estivo della ape regina" = cut(data[ , which(grepl("^....-63.5", 
-																																					names(data)))[1]], breaks = c(0,33,66,100)), 
-				# "Ingabbiamento invernale della ape regina" = cut(data[ , which(grepl("^....-63.6", 
-				# 																																		 names(data)))[1]], breaks = c(0,33,66,100)),
-				"Nutrizione: sciroppo zuccherino" = (data[ , which(grepl(" ha somministrato sciroppo zuccherino industriale ad alcune o a tutte le sue colonie di api\\?", 
-																																	 names(data)))[1]] == "Sì" |
-																									data[ , which(grepl(" ha somministrato polline e sciroppo ad alcune o a tutte le sue colonie di api\\?", 
-																																			names(data)))[1]] == "Sì" |
-																									data[ , which(grepl("sciroppo zuccherino artigianale \\(glucosio, saccarosio ed acqua", 
-																																			names(data)))[1]] == "Sì" ),
-				"Nutrizione: candito zuccherino" = (
-					data[ , which(grepl("candito zuccherino ad alcune o a tutte le sue colonie di api", 
-															names(data)))[1]] == "Sì" )
-				
-			)
-			rcoloreda2 <- switch(
-				# colore cambia secondo dimensione apicoltore
-				input$vtar2,
-				"Tutte le aziende" = coloriDimApic[4],
-				"Az. < 100 alveari" = coloriDimApic[3],
-				"Az. 100-300 alveari" = coloriDimApic[2],
-				"As. > 300 alveari" = coloriDimApic[1]
-			)
-			rselect2 <- switch(
-				input$vtar2,
-				"Tutte le aziende" = all3,
-				"Az. < 100 alveari" = a100,
-				"Az. 100-300 alveari" = a130,
-				"As. > 300 alveari" = a300
-			)
+			"Ipm: asportazione parziale della covata per la creazione di nuclei" = data[ , which(grepl("^....-63.4", 
+																																																 names(data)))[1]] == "Sì", 
+			"Ingabbiamento estivo della ape regina" = cut(data[ , which(grepl("^....-63.5", 
+																																				names(data)))[1]], breaks = c(0,33,66,100)), 
+			# "Ingabbiamento invernale della ape regina" = cut(data[ , which(grepl("^....-63.6", 
+			# 																																		 names(data)))[1]], breaks = c(0,33,66,100)),
+			"Nutrizione: sciroppo zuccherino" = (data[ , which(grepl(" ha somministrato sciroppo zuccherino industriale ad alcune o a tutte le sue colonie di api\\?", 
+																															 names(data)))[1]] == "Sì" |
+																					 	data[ , which(grepl(" ha somministrato polline e sciroppo ad alcune o a tutte le sue colonie di api\\?", 
+																					 											names(data)))[1]] == "Sì" |
+																					 	data[ , which(grepl("sciroppo zuccherino artigianale \\(glucosio, saccarosio ed acqua", 
+																					 											names(data)))[1]] == "Sì" ),
+			"Nutrizione: candito zuccherino" = (
+				data[ , which(grepl("candito zuccherino ad alcune o a tutte le sue colonie di api", 
+														names(data)))[1]] == "Sì" )
 			
-			boxplot(mortal[rselect2]~datoh[rselect2], xlab = "", ylab = "mortalità (%)", col= rcoloreda2)
+		)
+		rcoloreda2 <- switch(
+			# colore cambia secondo dimensione apicoltore
+			input$vtar2,
+			"Tutte le aziende" = coloriDimApic[4],
+			"Az. < 100 alveari" = coloriDimApic[3],
+			"Az. 100-300 alveari" = coloriDimApic[2],
+			"As. > 300 alveari" = coloriDimApic[1]
+		)
+		rselect2 <- switch(
+			input$vtar2,
+			"Tutte le aziende" = all3,
+			"Az. < 100 alveari" = a100,
+			"Az. 100-300 alveari" = a130,
+			"As. > 300 alveari" = a300
+		)
+		
+			boxplot(mortal[rselect2]~datoh[rselect2], 
+							xlab = "", 
+							ylab = "mortalità (%)", 
+							col= rcoloreda2,
+							varwidth = T)
 
 
 })
+	output$nptesto <- renderPrint({
+		
+		mortal <- switch(
+			input$vmor,
+			"Mortalità in stagione attiva" = data$cMest,
+			"Mortalità invernale" = data$cMinv
+		)
+		datoh <- switch(
+			input$vdomsp,
+			"Impiego di acido ossalico gocciolato" = 
+				data[ , which(grepl("^....-60.1 Ha utilizzato prodotti a base di Acido Ossalico - gocciolati" , 
+														names(data)))[1]] == "Sì",
+			"Impiego di acido ossalico sublimato" =
+				data[ , which(grepl("^....-60.1 Ha utilizzato prodotti a base di Acido Ossalico - sublimato", 
+														names(data)))[1]] == "Sì",
+			"Impiego di acido formico" = 					data[ , which(grepl("^....-60.1 Ha utilizzato prodotti a base di Acido Formico", 
+																														names(data)))[1]] == "Sì",
+			"Ipm: asportazione di covata da fuco" = data[ , which(grepl("^....-63.1 TRA", 
+																																	names(data)))[1]] == "Sì",
+			"Ipm: Asportazione totale di covata" = cut(data[ , which(grepl("^....-63.3", 
+																																 names(data)))[1]], breaks = c(0,33,66,100)), 
+			"Ipm: asportazione parziale della covata per la creazione di nuclei" = cut(data[ , which(grepl("^....-63.4", 
+																																																 names(data)))[1]], breaks = c(0,33,66,100)),  
+			"Ingabbiamento estivo della ape regina" = cut(data[ , which(grepl("^....-63.5", 
+																																				names(data)))[1]], breaks = c(0,33,66,100)), 
+			# "Ingabbiamento invernale della ape regina" = cut(data[ , which(grepl("^....-63.6", 
+			# 																																		 names(data)))[1]], breaks = c(0,33,66,100)),
+			"Nutrizione: sciroppo zuccherino" = (data[ , which(grepl(" ha somministrato sciroppo zuccherino industriale ad alcune o a tutte le sue colonie di api\\?", 
+																															 names(data)))[1]] == "Sì" |
+																					 	data[ , which(grepl(" ha somministrato polline e sciroppo ad alcune o a tutte le sue colonie di api\\?", 
+																					 											names(data)))[1]] == "Sì" |
+																					 	data[ , which(grepl("sciroppo zuccherino artigianale \\(glucosio, saccarosio ed acqua", 
+																					 											names(data)))[1]] == "Sì" ),
+			"Nutrizione: candito zuccherino" = (
+				data[ , which(grepl("candito zuccherino ad alcune o a tutte le sue colonie di api", 
+														names(data)))[1]] == "Sì" )
+			
+		)
+		rcoloreda2 <- switch(
+			# colore cambia secondo dimensione apicoltore
+			input$vtar2,
+			"Tutte le aziende" = coloriDimApic[4],
+			"Az. < 100 alveari" = coloriDimApic[3],
+			"Az. 100-300 alveari" = coloriDimApic[2],
+			"As. > 300 alveari" = coloriDimApic[1]
+		)
+		rselect2 <- switch(
+			input$vtar2,
+			"Tutte le aziende" = all3,
+			"Az. < 100 alveari" = a100,
+			"Az. 100-300 alveari" = a130,
+			"As. > 300 alveari" = a300
+		)
+		
+		if(length(levels(as.factor(datoh[rselect2]))) < 3){# mann-withney solo se 2 livelli
+			wilcox.test(mortal[rselect2]~datoh[rselect2])}else{
+			
+		}
+		
+	})
 
 }
 
