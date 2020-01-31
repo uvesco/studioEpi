@@ -45,4 +45,4 @@ for(i in 1 : length(percentuali)){
 par(mar = c(5.1, 4.1, 4.1, 2.1)) # ripristino i margini di default
 dev.off()
 
-colors() #fornisce l'elenco delle 
+# colors() #fornisce l'elenco delle 

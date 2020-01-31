@@ -64,6 +64,28 @@ col2del <- which(colnames(data) %in% c("0005_cera-", "0005_propoli, cera-", "000
 data <- data[, - col2del] #eliminate le colonne in posizione col2del
 rm(col2del) #eliminato l'oggetto col2del
 
+# cambio tipo di dati ----
+data[ , grepl( "^....-20\\." , names( data ) ) ] <- factor(data[ , grepl( "^....-20\\." , names( data ) ) ], levels = c("0-5%", "6-10%", "11-15%", "16-20%"))
+data[ , grepl( "^....-21\\." , names( data ) ) ] <- factor(data[ , grepl( "^....-21\\." , names( data ) ) ], levels = c("Minori", "Uguali","Maggiori",  "Non so"))
+
+
+
+# calcolo mortalità ----
+# mortalità invernale
+data$cMinv <-
+	(1 - (data[, grepl("^....-16\\." , names(data))] /
+					data[, grepl("^....-10\\." , names(data))])) * 100
+
+data$cMinv[data$cMinv < 0] <- NA
+
+# mortalità estiva
+data$cMest <-
+	(1 - (data[, grepl("^....-5\\." , names(data))] /
+					data[, grepl("^....-4\\." , names(data))])) * 100
+
+data$cMest[data$cMest < 0] <- NA
+
+# esportazione dati
 xlsx::write.xlsx(data, paste0(Sys.Date(), "_dati_espansi.xlsx"))
 saveRDS(data, "./shiny/data.RDS")
 
