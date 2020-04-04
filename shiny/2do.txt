@@ -1,0 +1,22 @@
+x tab iniziale con due righe di introduzione e grafico
+x possibilità per l'utente di scegliere tra densità e frequenza (default densità), aggiungere ylab (nei barplot necessario modificare la tabella di origine)
+v reinserire apicoltore grosso
+x nel'istogramma numero di colonie mettere bin >2000
+x aggiungere la carta a shiny (aggiungendo la legenda dei colori)
+x grafico prodotti: mettere in ordine di frequenza decrescente invece che alfabetico
+x slide 13-14: boxplot o grafico a violino
+x slide 12: cercare di rappresentare nella variazione l'apporto di acquisto, creazione, cessione, morte  -- anche per ciascuna tipologia di variazione rappresentare l'entità rispetto al totale del patrimonio per classi di dimensione aziendale
+x slide 15: mortalità estiva e invernale come boxplot
+x slide 16-17: mortalità x età apicoltore (boxplot)
+x slide 18: farla uguale oppure tenere come è già
+x cause di mortalità in inverno: rimpicciolire le etichette e metter in ordine di frequenza (vale per tutti i barplot)
+x slide 22: 4 boxplot (uno per stagione sulla % di perdite dichiarate, larghezza proporzionale a numero di osservazioni)
+x confronto mortalità tra chi ha dichiarato avvelenamenti in qualsiasi stagione e chi no.
+x provare a fare boxplot della mortalità totale effettiva per ciascuna risposta su cause di mortalità invernali (se risultato incongruente eliminare)
+x colture prossime ai fenomeni di avvelenamento (barplot con frequenze)
+### sezione alimentazione
+x slide 24, 25, 26: farle =
+x domande 42 e 43: riformulare in modo da riferire le domande all'annualità trascorsa
+
+
+

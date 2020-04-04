@@ -1,0 +1,28 @@
+---
+title: "Titolo"
+---
+In questa sezione c'è un testo che illustra le finalità dell'iniziativa / come leggere i dati
+
+## Informazioni sui dati
+
+Poi deve anche presentare i numeri:<br>
+				- numero di record presenti<br>
+				- numero di record per anno<br>
+				- versione del dataset<br>
+				- ultimo aggiornamento<br>
+
+
+## Figures
+
+```{r prova, echo=FALSE, fig.show='hold'}
+plot(1:10)
+plot(10:1)
+```
+
+
+
+
+```{r bib, include=FALSE}
+# KEEP THIS AT THE END OF THE DOCUMENT TO GENERATE A LOCAL bib FILE FOR PKGS USED
+knitr::write_bib(sub("^package:", "", grep("package", search(), value=TRUE)), file='skeleton.bib')
+```

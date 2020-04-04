@@ -86,7 +86,7 @@ data$cMest <-
 data$cMest[data$cMest < 0] <- NA
 
 
-data <- data[-which(data$`0007-4.	Numero di colonie vive al 1 aprile 2018` ==7000),]
+# data <- data[-which(data$`0007-4.	Numero di colonie vive al 1 aprile 2018` ==7000),]
 
 # esportazione dati
 xlsx::write.xlsx(data, paste0(Sys.Date(), "_dati_espansi.xlsx"))
