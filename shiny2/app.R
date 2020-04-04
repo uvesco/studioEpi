@@ -9,6 +9,7 @@ library(rgdal)
 library(maptools)
 library(htmlwidgets)
 library(RCurl)
+library(highcharter)
 
 # nella versione definitiva impostare la traduzione di tutto, con bandierine da schiacciare
 
@@ -72,7 +73,9 @@ ui <- navbarPage(
 		tabPanel("Dimensione apiari",
 						 p("istogramma")),
 		tabPanel("Produzioni",
-						 p("barplot"))
+						 #p("barplot"),br(),
+						 highchartOutput('plot')
+						 )
 	),
 	
 	navbarMenu(
@@ -304,6 +307,8 @@ ui <- navbarPage(
 # server --------
 server <- function(input, output, session) {
 
+	#2do: tutta la parte di elaborazione delle province (readogr e cambio sistema di coordinate può essere fatto a parte e poi importato da RDS)
+	#2do: con dati definitivi necessario potere selezionare le annualità e quindi necessario leaflet proxy https://rstudio.github.io/leaflet/shiny.html
 	province <- table(data[4])
 	province <- substr(names(province), 1,3)
 	province <- data.frame(COD_PRO = as.integer(province), num = as.vector(tabella))
@@ -313,7 +318,7 @@ server <- function(input, output, session) {
 	prov2008G <- merge(prov2008G, province)
 	
 	cols <- brewer.pal(3, "YlOrRd")
-	pal <- colorRampPalette(c("yellow", "red"))(10)
+	pal <- colorRampPalette(c("yellow", "red"))(10) #2do potrebbe non essere generalizzabile a numeri più grossi
 	prov2008G$cols[!is.na(prov2008G$num)] <- rgb(colorRamp(pal)(prov2008G$num[!is.na(prov2008G$num)]/10), max=255)
 	
 	geo_proj <- "+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0" # necessario trasformare in L/L WGS84
@@ -353,7 +358,53 @@ server <- function(input, output, session) {
 				direction = "auto"))
 		
 	})
+	
 
+		#plot esportabile di prova
+	output$plot <- renderHighchart({
+		
+		# Define your data, here I am using Iris dataset as example
+		DT <- iris$Sepal.Length 
+		
+		# Define export options
+		export <- list(
+			list(
+				text = "PNG",
+				onclick = JS("function () {
+                   this.exportChart({ type: 'image/png' }); }")
+			),
+			list(
+				text = "JPEG",
+				onclick = JS("function () {
+                   this.exportChart({ type: 'image/jpeg' }); }")
+			),
+			list(
+				text = "SVG",
+				onclick = JS("function () {
+                   this.exportChart({ type: 'image/svg+xml' }); }")
+			),
+			list(
+				text = "PDF",
+				onclick = JS("function () {
+                   this.exportChart({ type: 'application/pdf' }); }")
+			)
+		)
+		
+		# Plot histogram
+		hchart(DT,
+					 type = "area",
+					 name = colnames(iris[1])
+		) %>%
+			hc_exporting(
+				enabled = TRUE,
+				formAttributes = list(target = "_blank"),
+				buttons = list(contextButton = list(
+					text = "Export",
+					theme = list(fill = "transparent"),
+					menuItems = export
+				))
+			)
+	})
 	
 	
 }
